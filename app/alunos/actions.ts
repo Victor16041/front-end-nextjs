@@ -1,10 +1,10 @@
 "use server";
-
+ 
 import { Aluno } from "@/interfaces/alunos";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-
+ 
 export async function getAlunos() {
     try {
     const cookiesStore = await cookies();
@@ -15,16 +15,16 @@ export async function getAlunos() {
         },
         next: { tags: ["listar"] },
     });
-
+ 
     if (response.status === 401) {
         redirect("/login");
     }
-
+ 
     if (response.status === 200) {
         const data = await response.json();
         return data as Aluno[];
     }
-
+ 
     console.log(response);
     return [];
     } catch (e) {
@@ -32,31 +32,28 @@ export async function getAlunos() {
         return[]
     }
 }
-
-    export async function deleteAluno(id: number) {
-        const cookiesStore = await cookies
-        const token = cookiesStore.get("access_token")?.value;
-
-        const response = await fetch(`http://localhost:8080/alunos/${id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-        });
-
-        const data = await response.json();
-
-        if (response.status === 200) {
-            revalidateTag("listar", "max");
-            return;
-        }
-
-        if (response.status === 401) {
-            redirect("/login");
-        }
-
-
-        return data;
+ 
+export async function deleteAluno(id: number) {
+    const cookiesStore = await cookies(); // era: cookies sem ()
+    const token = cookiesStore.get("access_token")?.value;
+ 
+    const response = await fetch(`http://localhost:8080/alunos/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    });
+ 
+    const data = await response.json();
+ 
+    if (response.status === 200) {
+        revalidateTag("listar", "max");
+        return;
     }
-
-
+ 
+    if (response.status === 401) {
+        redirect("/login");
+    }
+ 
+    return data;
+}

@@ -3,25 +3,9 @@
 import { Curso } from "@/interfaces/cursos";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { updateCurso } from "../../cadastro/action";
+import { getCurso, updateCurso } from "../actions"; // importa das actions corretas
 
-type CursoAPI = {
-  id: number;
-  nome: string;
-  professor: string;
-  descricao: string;
-  cargaHoraria: number;
-};
-
-type CursoPayload = {
-  id: number;
-  nome: string;
-  professor: string;
-  descricao: string;
-  cargaHoraria: number;
-};
-
-export default function CursoPage() {
+export default function CursoEditarPage() {
   const params = useParams();
   const router = useRouter();
 
@@ -33,75 +17,37 @@ export default function CursoPage() {
       : undefined;
 
   const [curso, setCurso] = useState<Partial<Curso>>({
-    curso: "",
+    nome: "",
     professor: "",
-    cargaHoraria: 0,
+    cargaHoraria: "",
     descricao: "",
   });
 
-  function toFrontend(data: CursoAPI): Partial<Curso> {
-    return {
-      curso: data.nome ?? "",
-      professor: data.professor ?? "",
-      cargaHoraria: data.cargaHoraria ?? 0,
-      descricao: data.descricao ?? "",
-    };
-  }
-
-  function toBackend(): CursoPayload {
-    return {
-      id: Number(idParam),
-      nome: curso.curso ?? "",
-      professor: curso.professor ?? "",
-      descricao: curso.descricao ?? "",
-      cargaHoraria: Number(curso.cargaHoraria ?? 0),
-    };
-  }
-
   useEffect(() => {
     if (!idParam) return;
-
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`/api/curso/${idParam}`);
-
-        const data: CursoAPI = await res.json(); // ✅ sem any
-
-        setCurso(toFrontend(data));
-      } catch (err) {
-        console.error("Erro ao buscar curso:", err);
-      }
-    };
-
-    fetchData();
+    getCurso(Number(idParam))
+      .then((data) => setCurso(data))
+      .catch((err) => console.error("Erro ao buscar curso:", err));
   }, [idParam]);
 
-  function handleChange<K extends keyof Curso>(
-    value: Curso[K],
-    key: K
-  ) {
-    setCurso((old) => ({
-      ...old,
-      [key]: value,
-    }));
+  function handleChange<K extends keyof Curso>(value: Curso[K], key: K) {
+    setCurso((old) => ({ ...old, [key]: value }));
   }
 
-  async function handleUpdate(
-    e: React.FormEvent<HTMLFormElement>
-  ) {
+  async function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     if (!idParam) return;
 
-    const payload = toBackend();
-
-    await updateCurso(Number(idParam), payload);
-
+    const result = await updateCurso(Number(idParam), curso as Curso);
+    if (result) {
+      alert(result);
+      return;
+    }
     router.push(`/curso/${idParam}`);
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-100 to-zinc-200">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-zinc-100 to-zinc-200">
       <form
         className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md space-y-6"
         onSubmit={handleUpdate}
@@ -111,57 +57,40 @@ export default function CursoPage() {
         </h1>
 
         <div className="flex flex-col gap-4">
-
           <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">
-              Nome
-            </label>
+            <label className="text-sm text-zinc-600 mb-1">Nome</label>
             <input
               className="border border-zinc-300 rounded-lg px-3 py-2"
-              value={curso.curso ?? ""}
-              onChange={(e) =>
-                handleChange(e.target.value, "curso")
-              }
+              value={curso.nome ?? ""}
+              onChange={(e) => handleChange(e.target.value, "nome")}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">
-              Professor
-            </label>
+            <label className="text-sm text-zinc-600 mb-1">Professor</label>
             <input
               className="border border-zinc-300 rounded-lg px-3 py-2"
               value={curso.professor ?? ""}
-              onChange={(e) =>
-                handleChange(e.target.value, "professor")
-              }
+              onChange={(e) => handleChange(e.target.value, "professor")}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">
-              Descrição
-            </label>
+            <label className="text-sm text-zinc-600 mb-1">Descrição</label>
             <textarea
               className="border border-zinc-300 rounded-lg px-3 py-2"
               value={curso.descricao ?? ""}
-              onChange={(e) =>
-                handleChange(e.target.value, "descricao")
-              }
+              onChange={(e) => handleChange(e.target.value, "descricao")}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">
-              Carga horária
-            </label>
+            <label className="text-sm text-zinc-600 mb-1">Carga Horária</label>
             <input
               type="number"
               className="border border-zinc-300 rounded-lg px-3 py-2"
               value={curso.cargaHoraria ?? ""}
-              onChange={(e) =>
-                handleChange(Number(e.target.value), "cargaHoraria")
-              }
+              onChange={(e) => handleChange(e.target.value, "cargaHoraria")}
             />
           </div>
         </div>

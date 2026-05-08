@@ -3,7 +3,7 @@
 import { Curso } from "@/interfaces/cursos";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import  {getCurso}  from "./action";
+import { getCurso } from "./actions"; // era: "./action"
 import { PenBox } from "lucide-react";
 import Link from "next/link";
 
@@ -29,7 +29,7 @@ export default function CursoPage() {
                 
                 <div className="flex gap-2 items-center justify-between">
                     <h1 className="text-2xl font-bold text-center text-zinc-800 mb-6">
-                        {curso.curso}
+                        {curso.nome}
                     </h1>
 
                     <Link href={`/curso/${id}/editar`}>
@@ -41,7 +41,7 @@ export default function CursoPage() {
                     <div className="bg-zinc-50 p-4 rounded-lg">
                         <p className="text-sm text-zinc-500">Nome</p>
                         <p className="text-lg font-semibold text-zinc-800">
-                            {curso.curso || "Carregando..."}
+                            {curso.nome || "Carregando..."}
                         </p>
                     </div>
 
