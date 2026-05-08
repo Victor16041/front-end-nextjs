@@ -10,7 +10,6 @@ interface Curso {
     professor: string;
 }
 
-
 export async function createCurso(curso: Curso) {
     try {
         const cookiesStore = await cookies();
@@ -22,7 +21,6 @@ export async function createCurso(curso: Curso) {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify(curso)
         });
 
@@ -30,37 +28,15 @@ export async function createCurso(curso: Curso) {
             redirect("/login");
         }
 
-        return await response.json();
-
-    } catch (e) {
-        console.error(e);
-        return {} as Curso;
-    }
-}
-
-
-export async function updateCurso(id: number, curso: Curso) {
-    try {
-        const cookiesStore = await cookies();
-        const token = cookiesStore.get("access_token")?.value;
-
-        const response = await fetch(`http://localhost:8080/cursos/${id}`, {
-            method: "PUT",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(curso),
-        });
-
-        if (response.status === 401) {
-            redirect("/login");
+        if (response.status === 201) {
+            return;
         }
 
-        return await response.json();
+        const data = await response.json();
+        return typeof data === "string" ? data : JSON.stringify(data);
 
     } catch (e) {
         console.error(e);
-        return "Erro ao atualizar o curso";
+        return "Erro ao criar curso";
     }
 }

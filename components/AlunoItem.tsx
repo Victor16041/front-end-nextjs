@@ -20,8 +20,6 @@ export default function AlunoItem({ nome, id }: Props) {
 
     return (
         <li className="bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition flex items-center justify-between">
-            
-         
             <Link href={`/aluno/${id}`} className="flex items-center gap-3 flex-1">
                 <User size={20} className="text-green-500" />
                 <span className="text-gray-800 font-medium text-lg">

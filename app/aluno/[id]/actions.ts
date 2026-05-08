@@ -67,7 +67,7 @@ export async function updateAluno(id: number, aluno: Aluno) {
     }
 }catch (e) {
     console.error(e);
-    return "Erro ao atualizar o aluno"
+    return "Erro ao astualizar o aluno"
 }
 
     

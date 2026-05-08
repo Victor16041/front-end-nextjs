@@ -31,7 +31,7 @@ export default function AlunoCadastroPage() {
 
   return (
     <div className="w-screen h-screen flex flex-col items-center">
-      <h1 className="mt-10 mb-50 text-5xl font-bold">Cadastro de Aluno</h1>
+      <h1 className="mt-10 mb-50 text-5xl font-bold">Cadastro</h1>
       <form className="px-10 py-5 flex flex-col gap-2 bg-white rounded-lg" onSubmit={handleSubmit}>
         <input
           className="border border-black text-black pl-1"

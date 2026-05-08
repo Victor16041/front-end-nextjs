@@ -3,7 +3,7 @@
 import { Curso } from "@/interfaces/cursos";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCurso, updateCurso } from "../actions"; // importa das actions corretas
+import { getCurso, updateCurso } from "../actions";
 
 export default function CursoEditarPage() {
   const params = useParams();
@@ -37,7 +37,6 @@ export default function CursoEditarPage() {
   async function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!idParam) return;
-
     const result = await updateCurso(Number(idParam), curso as Curso);
     if (result) {
       alert(result);
@@ -47,57 +46,40 @@ export default function CursoEditarPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-zinc-100 to-zinc-200">
+    <div className="w-screen h-screen flex flex-col items-center">
+      <h1 className="mt-10 mb-50 text-5xl font-bold">Editar Curso</h1>
       <form
-        className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md space-y-6"
+        className="px-10 py-5 flex flex-col gap-2 bg-white rounded-lg"
         onSubmit={handleUpdate}
       >
-        <h1 className="text-2xl font-bold text-center text-zinc-800">
-          Editar Curso
-        </h1>
-
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">Nome</label>
-            <input
-              className="border border-zinc-300 rounded-lg px-3 py-2"
-              value={curso.nome ?? ""}
-              onChange={(e) => handleChange(e.target.value, "nome")}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">Professor</label>
-            <input
-              className="border border-zinc-300 rounded-lg px-3 py-2"
-              value={curso.professor ?? ""}
-              onChange={(e) => handleChange(e.target.value, "professor")}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">Descrição</label>
-            <textarea
-              className="border border-zinc-300 rounded-lg px-3 py-2"
-              value={curso.descricao ?? ""}
-              onChange={(e) => handleChange(e.target.value, "descricao")}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="text-sm text-zinc-600 mb-1">Carga Horária</label>
-            <input
-              type="number"
-              className="border border-zinc-300 rounded-lg px-3 py-2"
-              value={curso.cargaHoraria ?? ""}
-              onChange={(e) => handleChange(e.target.value, "cargaHoraria")}
-            />
-          </div>
-        </div>
-
+        <input
+          className="border border-black text-black pl-1"
+          value={curso.nome ?? ""}
+          placeholder="Nome do Curso"
+          onChange={(e) => handleChange(e.target.value, "nome")}
+        />
+        <input
+          className="border border-black text-black pl-1"
+          value={curso.professor ?? ""}
+          placeholder="Nome do Professor"
+          onChange={(e) => handleChange(e.target.value, "professor")}
+        />
+        <textarea
+          className="border border-black text-black pl-1"
+          value={curso.descricao ?? ""}
+          placeholder="Descrição"
+          onChange={(e) => handleChange(e.target.value, "descricao")}
+        />
+        <input
+          type="number"
+          className="border border-black text-black pl-1"
+          value={curso.cargaHoraria ?? ""}
+          placeholder="Carga Horária"
+          onChange={(e) => handleChange(e.target.value, "cargaHoraria")}
+        />
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg"
+          className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
         >
           Salvar
         </button>

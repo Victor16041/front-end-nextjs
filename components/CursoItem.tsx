@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteCursos } from "@/app/cursos/action";
-import { Trash, BookOpen } from "lucide-react";
+import { Trash, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -21,7 +21,7 @@ export default function CursoItem({ nome, id }: Props) {
     return (
         <li className="bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition flex items-center justify-between">
             <Link href={`/curso/${id}`} className="flex items-center gap-3 flex-1">
-                <BookOpen size={20} className="text-blue-500" />
+                <User size={20} className="text-blue-500" />
                 <span className="text-gray-800 font-medium text-lg">
                     {nome}
                 </span>
