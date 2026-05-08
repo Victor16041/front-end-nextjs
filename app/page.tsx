@@ -2,6 +2,7 @@ import Link from "next/link";
 
 
 
+
 export default function Home() {
 
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <div className="w-screen h-10 flex justify-evenly bg-gray-500 items-center">
         <Link href="/">Home</Link>
         <Link href="/alunos">Alunos</Link>
+        <Link href="/cursos">Cursos</Link>
         <span>Sair</span>
       </div>
 

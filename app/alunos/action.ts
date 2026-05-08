@@ -1,6 +1,5 @@
 "use server";
 
-
 import { Aluno } from "@/interfaces/alunos";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";

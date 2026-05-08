@@ -34,7 +34,7 @@ export async function getAlunos() {
 }
 
     export async function deleteAluno(id: number) {
-        const cookiesStore = await cookies();
+        const cookiesStore = await cookies
         const token = cookiesStore.get("access_token")?.value;
 
         const response = await fetch(`http://localhost:8080/alunos/${id}`, {

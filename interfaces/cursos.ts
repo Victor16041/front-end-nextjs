@@ -11,5 +11,6 @@ export interface CursoData {
 }
 
 export interface Curso extends CursoData {
+    curso: string;
     alunos: AlunoData[];
 }
